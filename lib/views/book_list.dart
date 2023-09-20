@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mybooks/components/book_title.dart';
-import 'package:mybooks/data/dummy_books.dart';
+import 'package:mybooks/models/book.dart';
+import 'package:mybooks/provider/books.dart';
+import 'package:provider/provider.dart';
 
 class BookList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final books = {...DUMMY_BOOKS};
+    final Books books = Provider.of(context, listen: false);
 
     return Scaffold(
         appBar: AppBar(
@@ -13,13 +15,21 @@ class BookList extends StatelessWidget {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.add),
-              onPressed: () {},
+              onPressed: () {
+                books.put(Book(
+                  id: '100',
+                  title: 'Livro 1',
+                  publisher: 'Editora 1',
+                  year: '2021',
+                  imageUrl: 'https://images.com.br/1.jpg',
+                ));
+              },
             )
           ],
         ),
         body: ListView.builder(
-          itemCount: books.length,
-          itemBuilder: (ctx, i) => BookTitle(books.values.elementAt(i)),
+          itemCount: books.count,
+          itemBuilder: (ctx, i) => BookTitle(books.byIndex(i)),
         ));
   }
 }
